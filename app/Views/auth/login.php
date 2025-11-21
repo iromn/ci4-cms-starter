@@ -18,22 +18,52 @@
                     },
                     colors: {
                         primary: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
+                            50: '#f0faf8',
+                            100: '#d1f2eb',
+                            200: '#a3e5d7',
+                            300: '#75d8c3',
+                            400: '#65CCB8',
+                            500: '#57BA98',
+                            600: '#3B945E',
+                            700: '#2f7549',
+                            800: '#235634',
+                            900: '#182628',
                         }
                     }
                 }
             }
         }
     </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        html {
+            font-size: 14px;
+        }
+
+        @media (min-width: 640px) {
+            html {
+                font-size: 15px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            html {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            html {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            html {
+                font-size: 17px;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-gray-50 font-sans text-gray-800 antialiased min-h-screen flex items-center justify-center">

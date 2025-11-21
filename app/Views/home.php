@@ -31,11 +31,11 @@
         </div>
     </div>
     <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-gradient-to-br from-purple-50 to-indigo-50 flex items-center justify-center">
-        <div class="p-8">
-            <svg class="w-full h-full text-indigo-200" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-        </div>
+        <img
+            src="/images/ci4-cms-starter-hero.webp"
+            alt="CI4 CMS Starter Hero Image"
+            class="w-full h-64 sm:h-80 md:h-96 lg:h-full object-cover object-center"
+            loading="lazy">
     </div>
 </section>
 
