@@ -123,7 +123,49 @@ php spark db:seed AdminSeeder
 - Email: `admin@example.com`
 - Password: `password`
 
-### 7. Create Upload Directories
+### 7. Create App.php and Database.php
+
+Copy the App.example file to app/Config/App.php:
+```bash
+cp App.example app/Config/App.php
+```
+Copy the Database.example file to app/Config/Database.php:
+```bash
+cp Database.example app/Config/Database.php
+```
+
+Edit app/Config/Database.php according to your database settings:
+```ini
+# Database Configuration
+public array $default = [
+    'DSN'          => '',
+    'hostname'     => 'localhost',
+    'username'     => 'YOUR_DB_USERNAME',
+    'password'     => 'YOUR_DB_PASSWORD',
+    'database'     => 'YOUR_DB_NAME',
+    'DBDriver'     => 'MySQLi',
+    'DBPrefix'     => '',
+    'pConnect'     => false,
+    'DBDebug'      => true,
+    'charset'      => 'utf8mb4',
+    'DBCollat'     => 'utf8mb4_general_ci',
+    'swapPre'      => '',
+    'encrypt'      => false,
+    'compress'     => false,
+    'strictOn'     => false,
+    'failover'     => [],
+    'port'         => 3306,
+    'numberNative' => false,
+    'foundRows'    => false,
+    'dateFormat'   => [
+        'date'     => 'Y-m-d',
+        'datetime' => 'Y-m-d H:i:s',
+        'time'     => 'H:i:s',
+    ],
+];
+```
+
+### 8. Create Upload Directories
 
 Create the necessary directories for file uploads:
 
@@ -139,7 +181,7 @@ mkdir public\uploads\hero
 mkdir public\uploads\content
 ```
 
-### 8. Start Development Server
+### 9. Start Development Server
 
 ```bash
 php spark serve --port 3000
