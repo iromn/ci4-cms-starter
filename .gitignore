@@ -45,6 +45,16 @@ $RECYCLE.BIN/
 .vagrant
 Vagrantfile
 
+// ...existing code...
+
+#-------------------------
+# Configuration Files
+#-------------------------
+app/Config/App.php
+app/Config/Database.php
+
+// ...existing code...
+
 #-------------------------
 # Temporary Files
 #-------------------------
