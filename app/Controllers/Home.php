@@ -48,6 +48,9 @@ class Home extends BaseController
         }
 
         $data['blog'] = $blog;
+        $data['nextBlog'] = $this->blogModel->where('status', 'published')->where('created_at >', $blog['created_at'])->orderBy('created_at', 'ASC')->first();
+        $data['prevBlog'] = $this->blogModel->where('status', 'published')->where('created_at <', $blog['created_at'])->orderBy('created_at', 'DESC')->first();
+
         return view('blog/detail', $data);
     }
 
