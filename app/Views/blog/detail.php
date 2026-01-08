@@ -1,67 +1,104 @@
-<?= $this->extend('layouts/default') ?>
+<?= $this->extend('layouts/public') ?>
 
 <?= $this->section('content') ?>
-<article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <header class="mb-10 text-center">
-        <div class="flex justify-center items-center space-x-2 text-sm text-gray-500 mb-4">
-            <time datetime="<?= $blog['created_at'] ?>"><?= date('F j, Y', strtotime($blog['created_at'])) ?></time>
-            <span>&middot;</span>
-            <span>5 min read</span>
-            <?php if ($blog['status'] !== 'published') : ?>
-                <span class="ml-2 bg-yellow-100 text-yellow-800 py-0.5 px-2 rounded-full text-xs font-medium uppercase"><?= $blog['status'] ?></span>
-            <?php endif; ?>
-        </div>
-        <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl mb-6 leading-tight"><?= esc($blog['title']) ?></h1>
+<div class="flex flex-col lg:flex-row gap-8 items-start">
+    <!-- Sidebar: Title, Meta, Image -->
+    <aside class="w-full lg:w-1/3 sticky top-32">
+        <section class="glass-panel rounded-[2.5rem] p-8 md:p-12 flex flex-col h-fit">
+            <div class="flex items-center gap-2 mb-6 text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400">
+                <time datetime="<?= $blog['created_at'] ?>"><?= date('M d, Y', strtotime($blog['created_at'])) ?></time>
+                <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                <span>5 Min Read</span>
+            </div>
 
-        <div class="flex items-center justify-center">
-            <div class="flex-shrink-0">
-                <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold">
+            <h1 class="text-3xl md:text-3xl font-extrabold leading-tight mb-8 tracking-tight text-slate-900 dark:text-white">
+                <?= esc($blog['title']) ?>
+            </h1>
+
+            <div class="flex items-center gap-4 mb-10">
+                <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-primary/20">
                     <?= strtoupper(substr($blog['author_name'] ?? 'A', 0, 1)) ?>
                 </div>
+                <div>
+                    <p class="font-bold text-slate-900 dark:text-white"><?= esc($blog['author_name'] ?? 'Unknown Author') ?></p>
+                    <p class="text-xs text-slate-500">Lead Developer &amp; Writer</p>
+                </div>
             </div>
-            <div class="ml-3 text-left">
-                <p class="text-sm font-medium text-gray-900"><?= esc($blog['author_name'] ?? 'Unknown Author') ?></p>
-                <p class="text-sm text-gray-500">Writer & Developer</p>
+
+            <?php if ($blog['hero_image']) : ?>
+                <div class="relative group overflow-hidden rounded-2xl shadow-xl transition-all hover:shadow-2xl">
+                    <img alt="<?= esc($blog['title']) ?>"
+                        class="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
+                        src="<?= base_url('uploads/hero/' . $blog['hero_image']) ?>" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <p class="text-white text-lg font-bold">Featured Image</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <div class="mt-10 pt-8 border-t border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">
+                <div class="flex gap-2">
+                    <button class="w-10 h-10 rounded-full bg-white/50 dark:bg-slate-800/50 border border-white/50 dark:border-slate-700 flex items-center justify-center hover:bg-white dark:hover:bg-slate-800 transition-colors">
+                        <span class="material-symbols-outlined text-slate-400 text-xl">share</span>
+                    </button>
+                    <button class="w-10 h-10 rounded-full bg-white/50 dark:bg-slate-800/50 border border-white/50 dark:border-slate-700 flex items-center justify-center hover:bg-white dark:hover:bg-slate-800 transition-colors">
+                        <span class="material-symbols-outlined text-slate-400 text-xl">bookmark</span>
+                    </button>
+                    <!-- Edit Button for Admin -->
+                    <?php if (session()->get('isLoggedIn')) : ?>
+                        <a href="<?= base_url('admin/blogs/edit/' . $blog['id']) ?>" class="w-10 h-10 rounded-full bg-white/50 dark:bg-slate-800/50 border border-white/50 dark:border-slate-700 flex items-center justify-center hover:bg-white dark:hover:bg-slate-800 transition-colors" title="Edit Article">
+                            <span class="material-symbols-outlined text-primary text-xl">edit</span>
+                        </a>
+                    <?php endif; ?>
+                </div>
+                <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Article Info</div>
             </div>
-        </div>
-    </header>
+        </section>
+    </aside>
 
-    <!-- Hero Image -->
-    <?php if ($blog['hero_image']) : ?>
-        <div class="relative rounded-xl overflow-hidden shadow-lg mb-10">
-            <img src="<?= base_url('uploads/hero/' . $blog['hero_image']) ?>" alt="<?= esc($blog['title']) ?>" class="w-full h-auto object-cover">
-        </div>
-    <?php endif; ?>
+    <!-- Main Content -->
+    <article class="w-full lg:w-2/3">
+        <section class="glass-panel rounded-[2.5rem] p-8 md:p-16 lg:p-20">
+            <!-- Article Body -->
+            <div class="prose prose-slate prose-lg max-w-none dark:prose-invert prose-headings:font-extrabold prose-headings:tracking-tight prose-a:text-primary prose-strong:text-slate-900 dark:prose-strong:text-white prose-code:text-primary prose-code:bg-primary/5 prose-code:px-1 prose-code:rounded">
+                <?= $blog['content'] ?>
+            </div>
 
-    <!-- Content -->
-    <div class="prose prose-lg prose-blue mx-auto text-gray-600 blog-content">
-        <?= $blog['content'] ?>
-    </div>
+            <!-- Bottom Navigation -->
+            <div class="mt-20 pt-12 flex flex-col sm:flex-row items-center justify-between border-t border-slate-200/60 dark:border-slate-700/60 gap-8">
+                <a href="<?= base_url('blog') ?>" class="flex items-center gap-2 font-bold text-slate-500 hover:text-primary transition-colors group">
+                    <span class="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>
+                    Back to Articles
+                </a>
 
-    <!-- Footer -->
-    <div class="mt-12 pt-8 border-t border-gray-100 flex justify-between items-center">
-        <a href="<?= base_url('blog') ?>" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium transition-colors">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Blog
-        </a>
+                <div class="flex items-center gap-6">
+                    <span class="text-sm font-bold text-slate-400 uppercase tracking-widest">Next Entry</span>
+                    <div class="flex gap-3">
+                        <!-- Previous Post -->
+                        <?php if (isset($prevBlog) && $prevBlog) : ?>
+                            <a href="<?= base_url('blog/' . $prevBlog['slug']) ?>" class="w-14 h-14 rounded-2xl glass-card flex items-center justify-center shadow-sm hover:scale-110 transition-transform bg-white/50 dark:bg-slate-800/50 border-white dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800" title="<?= esc($prevBlog['title']) ?>">
+                                <span class="material-symbols-outlined text-slate-400 hover:text-primary">chevron_left</span>
+                            </a>
+                        <?php else : ?>
+                            <button class="w-14 h-14 rounded-2xl glass-card flex items-center justify-center shadow-sm bg-white/50 dark:bg-slate-800/50 border-white dark:border-slate-700 opacity-50 cursor-not-allowed">
+                                <span class="material-symbols-outlined text-slate-400">chevron_left</span>
+                            </button>
+                        <?php endif; ?>
 
-        <div class="flex space-x-4">
-            <button class="text-gray-400 hover:text-gray-600 transition-colors">
-                <span class="sr-only">Share on Twitter</span>
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                </svg>
-            </button>
-            <button class="text-gray-400 hover:text-gray-600 transition-colors">
-                <span class="sr-only">Share on Facebook</span>
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                </svg>
-            </button>
-        </div>
-    </div>
-</article>
+                        <!-- Next Post -->
+                        <?php if (isset($nextBlog) && $nextBlog) : ?>
+                            <a href="<?= base_url('blog/' . $nextBlog['slug']) ?>" class="w-14 h-14 rounded-2xl glass-card flex items-center justify-center shadow-sm hover:scale-110 transition-transform bg-primary/10 border-primary/20 hover:bg-primary hover:text-white group" title="<?= esc($nextBlog['title']) ?>">
+                                <span class="material-symbols-outlined text-primary group-hover:text-white">chevron_right</span>
+                            </a>
+                        <?php else : ?>
+                            <button class="w-14 h-14 rounded-2xl glass-card flex items-center justify-center shadow-sm bg-slate-100 dark:bg-slate-900 border-white/50 opacity-50 cursor-not-allowed">
+                                <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+                            </button>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </article>
+</div>
 <?= $this->endSection() ?>
